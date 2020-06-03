@@ -23,20 +23,21 @@
   Output:
     The solution vector that satisfies Ax = b
 */
-Matrix<double> LUP_solve(const Matrix<double>& L, const Matrix<double>& U, const std::vector<size_t>& pi, const Matrix<double>& b) {
+template <typename T>
+Matrix<T> LUP_solve(const Matrix<T>& L, const Matrix<T>& U, const std::vector<size_t>& pi, const Matrix<T>& b) {
   assert(b.get_num_cols() == 1);
 
   size_t n = L.get_num_rows();
 
   // let x, y be new vectors of length n
-  Matrix<double> x(n, 1);
-  Matrix<double> y(n, 1);
+  Matrix<T> x(n, 1);
+  Matrix<T> y(n, 1);
 
   // Forward substitution [ O(n^2) ]
   for(size_t i = 0 ; i < n ; ++i) {
    // y_i = b_pi[i] - \sum_1^{i-1} l_{i,j} * y_j
 
-   double sum = 0;
+   T sum = 0;
    for(size_t j = 0 ; j < i ; ++j) {
     sum += L(i,j)*y(j,0);
    }
@@ -51,7 +52,7 @@ Matrix<double> LUP_solve(const Matrix<double>& L, const Matrix<double>& U, const
   for(size_t i = n; i-- > 0;) {
     // x_i = (y_i - \sum_{i+1}^n u_{i,j} * x_j)/u_{i,i}
 
-    double sum = 0;
+    T sum = 0;
     for(size_t j = i+1 ; j < n ; ++j) {
       sum += U(i,j)*x(j,0);
     }
