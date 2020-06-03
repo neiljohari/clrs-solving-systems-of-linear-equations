@@ -4,68 +4,44 @@
 
 #include "matrix.h"
 #include "lup_solve.h"
-#include "lu_decomposition.h"
 #include "lup_decomposition.h"
 
 using namespace std;
 
-void test_lup_solve() {
-  cout << "Testing LUP-SOLVE procedure...\n";
-
-  Matrix<double> L(3,3, { 1, 0, 0, 0.2, 1, 0, 0.6, 0.5, 1});
-
-  Matrix<double> U(3,3, { 5, 6, 3, 0, 0.8, -0.6, 0, 0, 2.5});
-
-  // P = { 0 0 1,
-  //       1 0 0,
-  //       0 1 0 }
-  vector<size_t> pi = {2, 0, 1};
-
-  Matrix<double> b(3,1, {3, 7, 8});
-
-  Matrix<double> result = LUP_solve(L, U, pi, b);
-
-  Matrix<double> expected_result(3,1,{-1.4, 2.2, 0.6});
-
-  assert(result == expected_result);
-
-  cout << "PASSED!\n";
-}
-
-void test_lu_decomposition() {
-  cout << "Testing LU-DECOMPOSITION procedure...\n";
-
-  Matrix<double> A(4,4, {2,3,1,5,6,13,5,19,2,19,10,23,4,10,11,31});
-
-  auto [L, U] = LU_decomposition(A);
-
-  Matrix<double> expected_L(4,4,{1,0,0,0,3,1,0,0,1,4,1,0,2,1,7,1});
-  Matrix<double> expected_U(4,4,{2,3,1,5,0,4,2,4,0,0,1,2,0,0,0,3});
-
-  assert(L == expected_L);
-  assert(U == expected_U);
-
-  cout << "PASSED!\n";
-}
-
-
-void test_lup_decomposition() {
-  cout << "Testing LUP-DECOMPOSITION procedure...\n";
-
-  Matrix<double> A(4,4, {2,0,2,0.6,3,3,4,-2,5,5,4,2,-1,-2,3.4,-1});
-
-  Matrix<double> res = LUP_decomposition(A);
-
-  Matrix<double> expected_res(4,4, {5,5,4,2,0.4,-2,0.4,-0.2,-0.2,0.5,4,-0.5,0.6,0,0.4,-3});
-
-  assert(res == expected_res);
-  
-  cout << "PASSED!\n";
+Matrix<double> solve(const Matrix<double>& A, const Matrix<double>& b) {
+  auto [LU, pi] = LUP_decomposition(A);
+  return LUP_solve(LU, LU, pi, b);
 }
 
 int main() {
-  test_lup_solve();
-  test_lu_decomposition();
-  test_lup_decomposition();
+  // Discard a comment line
+  string junk;
+  getline(cin,junk);
+
+  // Read in number of rows & cols
+  unsigned n = 0;
+  cin >> n;
+
+  // Prepare matrices to solve Ax=b
+  Matrix<double> A(n,n);
+  Matrix<double> b(n,1);
+
+  // Read in [A | b]
+  for(unsigned i = 0 ; i < n ; ++i) {
+    double val = 0;
+    for(unsigned j = 0 ; j < n ; ++j) {
+      cin >> val;
+      A(i,j) = val;
+    }
+
+    cin >> val; // read in b
+    b(i,0) = val;
+  }
+
+  // Solve via LUP decomposition method
+  auto res = solve(A,b);
+
+  cout << "Solved! x = [\n" << res << "]\n";
+
   return 0;
 }

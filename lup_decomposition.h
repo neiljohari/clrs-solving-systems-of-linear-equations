@@ -6,10 +6,10 @@
 #include <cmath>
 
 template <typename T>
-Matrix<T> LUP_decomposition(Matrix<T> A) {
+std::tuple<Matrix<T>, std::vector<size_t>> LUP_decomposition(Matrix<T> A) {
   size_t n = A.get_num_rows();
 
-  std::vector<int> pi(n);
+  std::vector<size_t> pi(n);
 
   // pi = [0..n-1]
   std::iota(pi.begin(), pi.end(), 0);
@@ -40,6 +40,5 @@ Matrix<T> LUP_decomposition(Matrix<T> A) {
         A(i,j) = A(i,j) - A(i,k)*A(k,j);
     }
   }
-
-  return A;
+  return {A,pi};
 }
