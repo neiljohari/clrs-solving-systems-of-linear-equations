@@ -1,0 +1,22 @@
+{
+  "configurations" : {
+    "<name> : Launch": {
+      "adapter": "vscode-cpptools",
+      "configuration": {
+        "type": "cppdbg",
+        "request": "launch",
+        "name": "Debug",
+        "program": "${workspaceRoot}/solve_debug",
+        "args": [],
+        "stopAtEntry": true,
+        "cwd": "${workspaceRoot}",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "lldb",
+        "osx": {
+            "MIMode": "lldb"
+         }
+      } 
+    }
+  }
+}
