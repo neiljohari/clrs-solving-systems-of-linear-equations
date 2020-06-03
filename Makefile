@@ -124,7 +124,8 @@ sync2caen:
 #
 # % g++ -MM *.cpp
 #
-main.o: main.cpp matrix.h lup_solve.h
+main.o: main.cpp utils.h AlmostEquals.h matrix.h lup_solve.h \
+  lu_decomposition.h lup_decomposition.h
 
 # these targets do not create any files
 .PHONY: all release debug profile static clean alltests \

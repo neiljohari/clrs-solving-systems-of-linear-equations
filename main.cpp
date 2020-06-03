@@ -5,6 +5,7 @@
 #include "matrix.h"
 #include "lup_solve.h"
 #include "lu_decomposition.h"
+#include "lup_decomposition.h"
 
 using namespace std;
 
@@ -47,8 +48,24 @@ void test_lu_decomposition() {
   cout << "PASSED!\n";
 }
 
+
+void test_lup_decomposition() {
+  cout << "Testing LUP-DECOMPOSITION procedure...\n";
+
+  Matrix<double> A(4,4, {2,0,2,0.6,3,3,4,-2,5,5,4,2,-1,-2,3.4,-1});
+
+  Matrix<double> res = LUP_decomposition(A);
+
+  Matrix<double> expected_res(4,4, {5,5,4,2,0.4,-2,0.4,-0.2,-0.2,0.5,4,-0.5,0.6,0,0.4,-3});
+
+  assert(res == expected_res);
+  
+  cout << "PASSED!\n";
+}
+
 int main() {
   test_lup_solve();
   test_lu_decomposition();
+  test_lup_decomposition();
   return 0;
 }
